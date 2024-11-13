@@ -1,0 +1,19 @@
+GtkLabel{
+    color: solid #0044cc;
+}
+
+
+GtkToggleButton:checked{
+    background-image:none;
+    background-color:red;
+}
+
+.button_a{
+    color: solid #0044cc;
+}
+
+.button_b{
+    border:2px solid #000000;
+    border-radius:10px;
+    font-size:15px;
+}
