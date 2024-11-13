@@ -1,41 +1,31 @@
 #include <gtk/gtk.h>
 
-void activate();
 
 void clicked_stub(GtkWidget* widget, gpointer data) {}
 
-
-void clicked_button(GtkWidget* widget, gpointer data)
+void clicked_exit_button(GtkWidget* widget, gpointer data)
 {
     gtk_main_quit();
 }
 
+
 void LoadCss(){
-    // CSS読み込む際に必要です.
     GtkCssProvider* provider = gtk_css_provider_new();
     GError* error;
-
-    // CSSファイルの読み込み.
     gtk_css_provider_load_from_path(provider, "./test.css", &error);
 
     if( error != NULL ){
-        // 読み込み失敗.
         // exit(EXIT_FAILURE);
         return;
     }
-
-    // 読み込んだCSSの適用
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 
 
 GtkWidget*  button_with_modify_font(const char * caption) 
 {
-    //  = gtk_button_new_with_label(caption);
     GtkWidget*  widget = gtk_button_new_with_label("");
-
-    GtkWidget*  
-    label = gtk_bin_get_child(widget);
+    GtkWidget*  label = gtk_bin_get_child(widget);
 
     char str[32];
     sprintf(str, "<b>%s</b>", caption);
@@ -50,6 +40,7 @@ GtkWidget*  button_with_modify_font(const char * caption)
     gtk_widget_show(label);
     return widget;
    }
+
 
 int main (int argc, char* argv[])
 {
@@ -74,21 +65,17 @@ int main (int argc, char* argv[])
     GtkWidget   *wifi_status;
     GtkWidget   *main_status;
     GtkWidget   *mobility_status;
-
     GtkWidget   *start_stop;
-
     GtkWidget   *info2;
     GtkWidget   *power;
     GtkWidget   *preference;
-
     GtkButton  *exit;
-
 
     /*  Buttons         */
     wifi_status    = button_with_modify_font       ("wifi"     );
     main_status    = button_with_modify_font       ("status"  );
     mobility_status    = button_with_modify_font       ("connection" );
-    start_stop    = button_with_modify_font       ("START/STOP"    );
+    start_stop    = button_with_modify_font       ("Start/Stop"    );
     info2    = button_with_modify_font       ("info"     );
     power    = button_with_modify_font       ("Power"  );
     preference    = button_with_modify_font       ("Preference" );
@@ -110,7 +97,7 @@ int main (int argc, char* argv[])
     g_signal_connect(main_status, "clicked", G_CALLBACK(clicked_stub), window  );
     g_signal_connect(start_stop,  "clicked", G_CALLBACK(clicked_stub), window  );
     g_signal_connect(start_stop,"clicked", G_CALLBACK(clicked_stub), window  );
-    g_signal_connect(exit, "clicked", G_CALLBACK(clicked_button), NULL);
+    g_signal_connect(exit, "clicked", G_CALLBACK(clicked_exit_button), NULL);
 
     gtk_widget_show_all(window);
     gtk_main(); 
