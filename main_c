@@ -1,5 +1,7 @@
 #include <gtk/gtk.h>
-
+#include "typedefs.h"
+#include <stdio.h>
+#include <linux/limits.h>
 
 void clicked_stub(GtkWidget* widget, gpointer data) {}
 
@@ -27,6 +29,18 @@ GtkWidget*  button_with_modify_font(const char * caption)
     GtkWidget*  widget = gtk_button_new_with_label("");
     GtkWidget*  label = gtk_bin_get_child(widget);
 
+    // GtkEventBox *evb = gtk_event_box_new();
+    // evb->
+
+    Gtk::Label* label = Gtk::manage(new Gtk::Label());
+    label->set_label(message);
+    Gtk::EventBox* ebox = Gtk::manage(new Gtk::EventBox());
+    ebox->modify_bg(Gtk::STATE_NORMAL, bg_color);
+    ebox->add(*label);
+    widget->add(*ebox);
+
+    gtk_widget_set_app_paintable(evbox, FALSE);
+
     char str[32];
     sprintf(str, "<b>%s</b>", caption);
     gtk_label_set_markup(GTK_LABEL(label), str);
@@ -44,6 +58,14 @@ GtkWidget*  button_with_modify_font(const char * caption)
 
 int main (int argc, char* argv[])
 {
+   char cwd[PATH_MAX];
+   if (getcwd(cwd, sizeof(cwd)) != NULL) {
+       printf("Current working dir: %s\n", cwd);
+   } else {
+       perror("getcwd() error");
+       return 1;
+   }
+
     LoadCss();
 
     GtkWidget* window;

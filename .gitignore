@@ -32,4 +32,14 @@
 *.app
 
 # 
-test
+panel
+build/
+icon/
+.vscode/
+
+# CMake
+CMakeFiles/
+*.cmake
+CMakeCache.txt
+
+
