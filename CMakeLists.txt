@@ -52,11 +52,15 @@ endif()
 
 find_package(PkgConfig REQUIRED)
 find_package(Threads)
-pkg_search_module(GTKMM REQUIRED gtkmm-3.0)
+
 pkg_search_module(SIGCPP REQUIRED sigc++-2.0)
 pkg_search_module(GTK3 REQUIRED gtk+-3.0)
-pkg_search_module(GLIB2 REQUIRED glib-2.0)
+pkg_search_module(GTKMM REQUIRED gtkmm-3.0)
+pkg_search_module(GDK REQUIRED gdk-3.0)
+pkg_search_module(GLIB REQUIRED glib-2.0)
 pkg_search_module(PANGO REQUIRED pango)
+# pkg_search_module(LIBNM REQUIRED libnm)
+# pkg_search_module(LIBNMA REQUIRED libnma)
 pkg_search_module(X11 REQUIRED x11)
 
 # Copy data files over to build/
@@ -72,13 +76,20 @@ add_executable(panel ${PANAL_SOURCES})
 include_directories(SYSTEM
   ${GTKMM_INCLUDE_DIRS}
   ${SIGCPP_INCLUDE_DIRS}
-  ${X11_INCLUDE_DIRS})
+  ${X11_INCLUDE_DIRS}
+  # ${LIBNM_INCLUDE_DIRS} 
+  ${GLIB_INCLUDE_DIRS}
+  )
 
 set_property(TARGET panel PROPERTY COMPILE_OPTIONS
   ${GTKMM_CFLAGS_OTHER}
   ${SIGCPP_CFLAGS_OTHER}
   ${X11_CFLAGS_OTHER}
   ${WARNINGS_CXX_FLAGS}
+  # ${LIBNM_LIBRARIES} 
+  # ${GLIB_LIBRARIES}
+  # ${LIBNM_CFLAGS_OTHER} 
+  # ${GLIB_CFLAGS_OTHER}
   )
   
 target_link_libraries(panel
@@ -86,6 +97,8 @@ target_link_libraries(panel
   ${GTKMM_LIBRARIES}
   ${SIGCPP_LIBRARIES}
   ${X11_LIBRARIES})
+
+
 
 install(TARGETS panel
   RUNTIME DESTINATION ${CMAKE_INSTALL_LIBEXECDIR})
