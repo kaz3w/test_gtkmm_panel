@@ -24,15 +24,30 @@ activate(GtkApplication* app, gpointer user_data)
 }
 
 
+static void
+on_destroy(GtkApplication* app, gpointer user_data)
+{
+    // GtkWidget *window = gtk_application_window_new (app);
+
+}
+
+
+//#define _USE_VBOX
+
 int main (int argc, char* argv[])
 {
     int status = EXIT_SUCCESS;
 
 #if 1
+    GtkApplication *app;
+    app = gtk_application_new ("jp.example", G_APPLICATION_FLAGS_NONE);
+
     LoadCss();
 
     GtkWidget *window;
     GtkWidget *grid;
+    GtkWidget *stat_win;
+    GtkWidget *vbox;
 
     std::list<MY_WIDGET_PARAM> widgets = {{
         true, NULL, NULL, 0, wifi_timer_cb, "stat1",   "lightgray", 0, 0, 1, 1 },{
@@ -50,13 +65,25 @@ int main (int argc, char* argv[])
 
     gtk_window_fullscreen((GtkWindow*)window);
     gtk_window_set_title(GTK_WINDOW(window), "Panel");
- 
+
     grid = gtk_grid_new();
     gtk_grid_set_row_spacing        (GTK_GRID(grid),    4          );
     gtk_grid_set_column_spacing     (GTK_GRID(grid),    4          );
     gtk_grid_set_row_homogeneous    (GTK_GRID(grid),    TRUE        );
     gtk_grid_set_column_homogeneous (GTK_GRID(grid),    TRUE        );
+
+#ifdef _USE_VBOX
+    vbox = gtk_vbox_new(TRUE, 4);
+    stat_win = gtk_label_new("Stat");
+    gtk_window_set_default_size (GTK_WINDOW (stat_win), 200, 100);
+
+    gtk_box_pack_start (GTK_BOX (vbox), stat_win, TRUE, TRUE, 2);
+    gtk_box_pack_start (GTK_BOX (vbox), grid, TRUE, TRUE, 2);
+    gtk_container_add               (GTK_CONTAINER(window), vbox    );
+#else
     gtk_container_add               (GTK_CONTAINER(window), grid    );
+#endif
+
 
     for (auto it = widgets.begin(); it != widgets.end(); it++)
     {
@@ -73,6 +100,7 @@ int main (int argc, char* argv[])
             (*it).timer_id = g_timeout_add(100, (GSourceFunc)(*it).timer_cb,(*it).widget);
         }
     }
+    g_signal_connect (app, "destroy", G_CALLBACK (on_destroy), NULL);
     gtk_widget_show_all(window);
     gtk_main();
 

@@ -141,7 +141,7 @@ GtkWidget*  label_with_modify_font( GtkWidget *window, const char * caption, con
   gtk_widget_override_background_color( label, GTK_STATE_FLAG_NORMAL, &colorBk);
 
   char str[1024] = {0};
-  snprintf(str, sizeof(str)-1, "<span foreground=#FFFFFFFF background=#00FF007F>َ<b>%s</b></span>", caption);
+  snprintf(str, sizeof(str)-1, "<span foreground='white' background='lightblue'>َ<b>%s</b></span>", caption);
   gtk_label_set_markup(GTK_LABEL(label), str);
   gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
 
@@ -177,7 +177,7 @@ GtkWidget*  button_with_modify_font( GtkWidget *window, const char * caption, in
   gtk_container_add (GTK_CONTAINER (button), label);
 
   char str[128] = {0};
-  snprintf(str, sizeof(str) - 1, "<span background=#00FF007F>َ</span><b>%s</b>", caption);
+  snprintf(str, sizeof(str) - 1, "<span><b>%s</b></span>", caption);
   gtk_label_set_markup(GTK_LABEL(label), str);
   gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_CENTER);
 
